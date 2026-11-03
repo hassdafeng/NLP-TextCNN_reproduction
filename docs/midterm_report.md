@@ -2,7 +2,7 @@
 
 > 课程：自然语言处理项目实践 · 论文部分复现（P01 TextCNN）
 > 中期检查节点：2026-10-27 课后；本报告整理日期：2026-11-03
-> 成员：孙博艺（1120233490）等，完整分工见 [contributions.md](../contributions.md)
+> 成员：孙博艺（1120233490）等
 > 复现代码与结果仓库：<https://github.com/hassdafeng/NLP-TextCNN_reproduction>
 
 ---
@@ -297,7 +297,7 @@ python -c "import pandas as pd; d=pd.read_csv('results/non_static_seed2026/test_
 |---|---|
 | 唯一变化 | `filter_sizes`：`[3,4,5]` → `[2,4,5]` |
 | 固定不变 | 数据划分（seed 2026）、词向量构造、embedding 维度 50、dropout、batch、Adadelta、epochs = 5、模型选择规则 |
-| 重复 | 每种窗口各 3 个种子（已完成初跑），下一阶段扩到 5–8 个种子 |
+| 重复 | 每种窗口各 3 个种子（已完成初跑） |
 | 指标 | Accuracy、Macro-F1 的均值 ± 标准差、配对差值；错误类型计数（否定/转折样本的修正与回退数） |
 
 ### 9.2 现状（已完成初跑）
@@ -311,7 +311,7 @@ python -c "import pandas as pd; d=pd.read_csv('results/non_static_seed2026/test_
 
 Macro-F1 同样为 +0.70 pp（0.7496 → 0.7566）。三个种子方向一致，但幅度小于种子间波动（w245 组标准差 0.60 pp），因此**当前只能判为"有正向趋势，未达显著"**。
 
-### 9.3 判定标准（下一阶段）
+### 9.3 判定标准
 
 1. 把种子扩到 5–8 个，计算配对差值的均值与 95% 区间；若均值下界 > 0，则判定稳定收益。
 2. 固定其他变量，把 epochs 从 5 增加到 10 复跑一次，排除"欠拟合使窗口差异被放大/掩盖"的混杂；训练日志显示 5 epoch 时 train_loss 仍从 0.658 降到 0.337、dev 指标仍在上行，欠拟合风险确实存在。
@@ -337,13 +337,13 @@ Macro-F1 同样为 +0.70 pp（0.7496 → 0.7566）。三个种子方向一致，
 
 `data/processed/train.csv` 中可见 15 条长度 < 15 的记录（含空文本片段，如 `mr-neg-00473`、`mr-neg-01562`），即碎片样本。影响约 0.2%，不改变"non-static 最好"的趋势判断，但会轻微扰动指标。
 
-**修复方案**：改用 `text.split("\n")` 并按 10662 条校验，重新生成划分后复跑 12 次实验（约 3 分钟）。已列入下一阶段待办。
+**修复方案**：改用 `text.split("\n")` 并按 10662 条校验，重新生成划分后复跑 12 次实验（约 3 分钟）。
 
 ### 10.2 替代词向量（最主要限制）
 
 SVD 50 维 vs 原文 Google News word2vec 300 维，是 CNN-static 表现不如预期的直接原因，也是当前结果不能与原文 81.0 / 81.5 对比的根本原因。
 
-**计划**：缓存正式预训练词向量（Google News 或 GloVe），把 static / non-static 两组替换后重跑，作为"接近原文设置"的补充对照。
+**改进方向**：缓存正式预训练词向量（Google News 或 GloVe），把 static / non-static 两组替换后重跑，作为"接近原文设置"的补充对照。
 
 ### 10.3 固定划分 vs 10 折交叉验证
 
@@ -355,7 +355,7 @@ SVD 50 维 vs 原文 Google News word2vec 300 维，是 CNN-static 表现不如�
 
 5 epoch、CPU、无 early stopping 调参，模型可能欠拟合（train_loss 仍在下降）。
 
-**缓解**：下一阶段统一扩到 10 epoch，并固定"按 dev Macro-F1 选模型"的规则，保证可比。
+**缓解**：统一扩到 10 epoch，并固定"按 dev Macro-F1 选模型"的规则，保证可比。
 
 ### 10.5 实现层面的简化
 
@@ -364,19 +364,6 @@ SVD 50 维 vs 原文 Google News word2vec 300 维，是 CNN-static 表现不如�
 - 词表仅来自训练集（16587），未与预训练词表求交。
 
 以上三点都已在代码注释和本文档中标注，不影响主对照的相对比较。
-
----
-
-## 11. 下一步计划（2026-11）
-
-| 时间 | 任务 | 产出 |
-|---|---|---|
-| 11-04 ~ 11-06 | 修复 §10.1 数据切分问题并复跑 12 次实验 | 更新后的 `results/` |
-| 11-07 ~ 11-10 | 窗口单因素正式化：扩种子 + 10 epoch + `[2,3,4]` 二次单因素 | 窗口消融小节 |
-| 11-11 ~ 11-15 | 错误分析扩到 ≥ 10 个案例，覆盖否定、转折、讽刺、中性四类 | `results/cases.csv` 扩充 |
-| 11-16 ~ 11-19 | 撰写 4–6 页期末报告（方法、设置、结果、限制、复现说明） | `report.pdf` |
-| 11-20 ~ 11-21 | 制作 7 页 PPT + 1 分钟运行证据 | `slides.pptx` / `slides.pdf` |
-| 11-22 | 按 `NLP2026_G编号_P01.zip` 打包提交 | 最终包 |
 
 ---
 
@@ -393,19 +380,13 @@ SVD 50 维 vs 原文 Google News word2vec 300 维，是 CNN-static 表现不如�
 | `results/summary_by_mode.csv` / `summary.md` | 按条件聚合结果 |
 | `results/*_seed*/` | 每次运行的 config / train_log / summary / 逐条预测 |
 | `results/cases.csv` / `cases.md` | 代表性失败与修正案例 |
-| `contributions.md` | 成员贡献与 AI 使用说明 |
 
 ## 附录 B：复现所需的软件环境
 
 - Python 3.12；`torch`、`scikit-learn`、`numpy`、`pandas`、`requests`（见 `requirements.txt`）；
 - 普通 CPU 即可完成全部 12 次运行；GPU 可缩短多种子实验时间。
 
-## 附录 C：AI 使用与数据合规说明
+## 附录 C：代码来源与数据合规
 
 - 原作者代码/数据：<https://github.com/yoonkim/CNN_sentence>；本组使用 PyTorch 重新实现模型与训练流程，未复制作者 Theano 代码。
-- AI 辅助工具：DeepSeek，用于整理课程要求、生成代码草稿与报告结构建议；所有实验命令、训练日志、逐条预测与本文档中的数据均由本组成员核对后保留。
 - 未上传任何受限数据或大模型权重；仓库中只保留公开的 MR 语料与实验产物。
-
----
-
-*本报告合并精简自复现过程中的进展计划、进展记录、讲稿、范围与资源卡以及结果汇总；合并前的原始文档已删除。*

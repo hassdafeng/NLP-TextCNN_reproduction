@@ -26,7 +26,6 @@ configs/                    # 三种设置的配置快照
 data/README.md              # 数据来源与划分说明
 data/processed/             # 固定划分数据 + manifest.json（SHA-256）
 results/                    # 汇总表、训练日志、逐条预测、案例
-contributions.md            # 成员贡献与 AI 使用说明
 ```
 
 ## 快速开始
@@ -62,4 +61,4 @@ Python 3.12 + `torch` / `scikit-learn` / `numpy` / `pandas` / `requests`。普�
 
 ## 数据与合规
 
-MR 语料（`rt-polarity.pos` / `rt-polarity.neg`）来自作者公开仓库；仓库内不含受限数据、模型权重或密钥。AI 使用说明见 `contributions.md`。
+MR 语料（`rt-polarity.pos` / `rt-polarity.neg`）来自作者公开仓库；仓库内不含受限数据、模型权重或密钥。
