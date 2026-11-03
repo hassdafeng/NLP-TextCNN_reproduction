@@ -1,0 +1,23 @@
+{
+  "source": {
+    "pos": "https://raw.githubusercontent.com/yoonkim/CNN_sentence/master/rt-polarity.pos",
+    "neg": "https://raw.githubusercontent.com/yoonkim/CNN_sentence/master/rt-polarity.neg"
+  },
+  "raw_sha256": {
+    "rt-polarity.neg": "4ace77d558c3714723843f1d65b60c01e3417b208180f0728808d76ad0eeeaca",
+    "rt-polarity.pos": "2da124ec187a9d5a29c9f04e91c540e02baed5af8868f550a26bd6fd4dbf8bf0"
+  },
+  "split_seed": 2026,
+  "val_ratio": 0.1,
+  "test_ratio": 0.1,
+  "counts": {
+    "train": 8548,
+    "dev": 1068,
+    "test": 1069
+  },
+  "label_map": {
+    "neg": 0,
+    "pos": 1
+  },
+  "note": "Fixed stratified 80/10/10 split for the course reproduction package. The original paper reports 10-fold CV on MR."
+}

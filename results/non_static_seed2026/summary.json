@@ -1,0 +1,15 @@
+{
+  "run_id": "non_static_seed2026",
+  "mode": "non_static",
+  "seed": 2026,
+  "embedding_source": "local_svd_trainable",
+  "embedding_trainable": true,
+  "vocab_size": 16587,
+  "train_size": 8548,
+  "dev_size": 1068,
+  "test_size": 1069,
+  "best_dev_macro_f1": 0.7657072657072657,
+  "test_accuracy": 0.7539756782039289,
+  "test_macro_f1": 0.7539618989110849,
+  "elapsed_sec": 15.141586303710938
+}

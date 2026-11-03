@@ -1,0 +1,8 @@
+{
+  "mode": "rand",
+  "seeds": [13, 42, 2026],
+  "epochs": 5,
+  "embedding_dim": 50,
+  "filter_sizes": [3, 4, 5],
+  "note": "CNN-rand: randomly initialized trainable word vectors."
+}

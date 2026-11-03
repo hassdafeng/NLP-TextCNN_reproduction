@@ -1,0 +1,15 @@
+{
+  "run_id": "static_seed42",
+  "mode": "static",
+  "seed": 42,
+  "embedding_source": "local_svd_frozen",
+  "embedding_trainable": false,
+  "vocab_size": 16587,
+  "train_size": 8548,
+  "dev_size": 1068,
+  "test_size": 1069,
+  "best_dev_macro_f1": 0.7001307062981073,
+  "test_accuracy": 0.6950420954162769,
+  "test_macro_f1": 0.6946763250487125,
+  "elapsed_sec": 10.97690749168396
+}

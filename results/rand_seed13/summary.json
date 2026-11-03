@@ -1,0 +1,15 @@
+{
+  "run_id": "rand_seed13",
+  "mode": "rand",
+  "seed": 13,
+  "embedding_source": "random_trainable",
+  "embedding_trainable": true,
+  "vocab_size": 16587,
+  "train_size": 8548,
+  "dev_size": 1068,
+  "test_size": 1069,
+  "best_dev_macro_f1": 0.7340823970037453,
+  "test_accuracy": 0.7362020579981291,
+  "test_macro_f1": 0.736100217102038,
+  "elapsed_sec": 14.751328229904175
+}

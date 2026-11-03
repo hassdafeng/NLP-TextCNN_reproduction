@@ -1,0 +1,8 @@
+{
+  "mode": "non_static",
+  "seeds": [13, 42, 2026],
+  "epochs": 5,
+  "embedding_dim": 50,
+  "filter_sizes": [3, 4, 5],
+  "note": "CNN-non-static trial: local unsupervised SVD word vectors fine-tuned during classifier training."
+}
