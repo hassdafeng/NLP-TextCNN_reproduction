@@ -1,10 +1,5 @@
 # P01 TextCNN 复现中期报告
 
-> 课程：自然语言处理项目实践 · 论文部分复现（P01 TextCNN）
-> 中期检查节点：2026-10-27 课后；本报告整理日期：2026-11-03
-> 成员：孙博艺（1120233490）等
-> 复现代码与结果仓库：<https://github.com/hassdafeng/NLP-TextCNN_reproduction>
-
 ---
 
 ## 摘要
