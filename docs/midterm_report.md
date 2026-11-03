@@ -408,4 +408,4 @@ SVD 50 维 vs 原文 Google News word2vec 300 维，是 CNN-static 表现不如�
 
 ---
 
-*本报告由 `docs/` 下原有的 `midterm_progress_plan.md`、`midterm_progress_record.md`、`midterm_progress_speech.md`、`scope_and_resource_card.md` 以及 `README.md`、`results/summary.md`、`results/cases.md` 合并精简而成；原始文档保留在本地，不重复上传。*
+*本报告合并精简自复现过程中的进展计划、进展记录、讲稿、范围与资源卡以及结果汇总；合并前的原始文档已删除。*

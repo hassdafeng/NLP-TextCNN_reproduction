@@ -4,7 +4,7 @@
 
 - 原论文：<https://aclanthology.org/D14-1181/>（ACL Anthology D14-1181，EMNLP 2014, pp. 1746–1751）
 - 作者代码与数据：<https://github.com/yoonkim/CNN_sentence>
-- **中期报告：[`docs/midterm_report.md`](docs/midterm_report.md)** ← 建议先读这份
+- 中期报告：[`docs/midterm_report.md`](docs/midterm_report.md)
 
 ## 快速结论
 
