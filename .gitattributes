@@ -1,0 +1,2 @@
+data/processed_lf/*.csv text eol=lf
+data/processed_lf/manifest.json text eol=lf

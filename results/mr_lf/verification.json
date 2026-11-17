@@ -1,0 +1,173 @@
+{
+  "split_manifest_sha256": "1ea2efd834947d346780564d8c6c5147d9aa93439a53ca55315c320202a8d6dd",
+  "counts": {
+    "train": 8529,
+    "dev": 1066,
+    "test": 1067
+  },
+  "label_counts": {
+    "train": {
+      "0": 4265,
+      "1": 4264
+    },
+    "dev": {
+      "0": 533,
+      "1": 533
+    },
+    "test": {
+      "0": 533,
+      "1": 534
+    }
+  },
+  "runs": {
+    "rand_seed13": {
+      "accuracy": 0.7235238987816307,
+      "macro_f1": 0.7230090824051609,
+      "best_dev_epoch": 4
+    },
+    "rand_seed42": {
+      "accuracy": 0.7010309278350515,
+      "macro_f1": 0.6975787499344732,
+      "best_dev_epoch": 4
+    },
+    "rand_seed2026": {
+      "accuracy": 0.7132146204311153,
+      "macro_f1": 0.7045230769230769,
+      "best_dev_epoch": 4
+    },
+    "static_seed13": {
+      "accuracy": 0.7075913776944704,
+      "macro_f1": 0.707584956573067,
+      "best_dev_epoch": 4
+    },
+    "static_seed42": {
+      "accuracy": 0.7150890346766635,
+      "macro_f1": 0.7108627906810905,
+      "best_dev_epoch": 4
+    },
+    "static_seed2026": {
+      "accuracy": 0.6991565135895033,
+      "macro_f1": 0.6901412655548167,
+      "best_dev_epoch": 4
+    },
+    "non_static_seed13": {
+      "accuracy": 0.761012183692596,
+      "macro_f1": 0.7578463961979521,
+      "best_dev_epoch": 5
+    },
+    "non_static_seed42": {
+      "accuracy": 0.7600749765698219,
+      "macro_f1": 0.7599431918049959,
+      "best_dev_epoch": 3
+    },
+    "non_static_seed2026": {
+      "accuracy": 0.7422680412371134,
+      "macro_f1": 0.7415042396211871,
+      "best_dev_epoch": 2
+    },
+    "non_static_w245_seed13": {
+      "accuracy": 0.7478912839737581,
+      "macro_f1": 0.7477415005804996,
+      "best_dev_epoch": 2
+    },
+    "non_static_w245_seed42": {
+      "accuracy": 0.7713214620431116,
+      "macro_f1": 0.7710751417436936,
+      "best_dev_epoch": 4
+    },
+    "non_static_w245_seed2026": {
+      "accuracy": 0.767572633552015,
+      "macro_f1": 0.7672928099057268,
+      "best_dev_epoch": 4
+    }
+  },
+  "grouped_metrics": {
+    "rand": {
+      "accuracy": {
+        "mean": 0.7125898156825992,
+        "min": 0.7010309278350515,
+        "max": 0.7235238987816307
+      },
+      "macro_f1": {
+        "mean": 0.7083703030875703,
+        "min": 0.6975787499344732,
+        "max": 0.7230090824051609
+      }
+    },
+    "static": {
+      "accuracy": {
+        "mean": 0.7072789753202124,
+        "min": 0.6991565135895033,
+        "max": 0.7150890346766635
+      },
+      "macro_f1": {
+        "mean": 0.7028630042696581,
+        "min": 0.6901412655548167,
+        "max": 0.7108627906810905
+      }
+    },
+    "non_static": {
+      "accuracy": {
+        "mean": 0.7544517338331771,
+        "min": 0.7422680412371134,
+        "max": 0.761012183692596
+      },
+      "macro_f1": {
+        "mean": 0.7530979425413784,
+        "min": 0.7415042396211871,
+        "max": 0.7599431918049959
+      }
+    },
+    "non_static_w245": {
+      "accuracy": {
+        "mean": 0.7622617931896283,
+        "min": 0.7478912839737581,
+        "max": 0.7713214620431116
+      },
+      "macro_f1": {
+        "mean": 0.76203648407664,
+        "min": 0.7477415005804996,
+        "max": 0.7710751417436936
+      }
+    }
+  },
+  "window_pairs": [
+    {
+      "seed": 13,
+      "n": 1067,
+      "fixed": 88,
+      "regressed": 102,
+      "both_correct": 710,
+      "both_wrong": 167,
+      "accuracy_delta_pp": -1.3120899718837864,
+      "macro_f1_delta_pp": -1.0104895617452536
+    },
+    {
+      "seed": 42,
+      "n": 1067,
+      "fixed": 51,
+      "regressed": 39,
+      "both_correct": 772,
+      "both_wrong": 205,
+      "accuracy_delta_pp": 1.1246485473289598,
+      "macro_f1_delta_pp": 1.1131949938697705
+    },
+    {
+      "seed": 2026,
+      "n": 1067,
+      "fixed": 79,
+      "regressed": 52,
+      "both_correct": 740,
+      "both_wrong": 196,
+      "accuracy_delta_pp": 2.5304592314901595,
+      "macro_f1_delta_pp": 2.5788570284539736
+    }
+  ],
+  "available_case_predictions_by_outcome_and_gold": {
+    "fixed_0": 144,
+    "fixed_1": 74,
+    "regressed_0": 63,
+    "regressed_1": 130
+  },
+  "selected_distinct_cases": 12
+}

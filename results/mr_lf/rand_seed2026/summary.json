@@ -1,0 +1,18 @@
+{
+  "run_id": "rand_seed2026",
+  "mode": "rand",
+  "filter_sizes": "3,4,5",
+  "condition": "rand",
+  "seed": 2026,
+  "split_manifest_sha256": "1ea2efd834947d346780564d8c6c5147d9aa93439a53ca55315c320202a8d6dd",
+  "embedding_source": "random_trainable",
+  "embedding_trainable": true,
+  "vocab_size": 16680,
+  "train_size": 8529,
+  "dev_size": 1066,
+  "test_size": 1067,
+  "best_dev_macro_f1": 0.6819579053956315,
+  "test_accuracy": 0.7132146204311153,
+  "test_macro_f1": 0.7045230769230769,
+  "elapsed_sec": 28.151490449905396
+}

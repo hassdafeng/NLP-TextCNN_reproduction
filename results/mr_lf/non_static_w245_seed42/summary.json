@@ -1,0 +1,18 @@
+{
+  "run_id": "non_static_w245_seed42",
+  "mode": "non_static",
+  "filter_sizes": "2,4,5",
+  "condition": "non_static_w245",
+  "seed": 42,
+  "split_manifest_sha256": "1ea2efd834947d346780564d8c6c5147d9aa93439a53ca55315c320202a8d6dd",
+  "embedding_source": "local_svd_trainable",
+  "embedding_trainable": true,
+  "vocab_size": 16680,
+  "train_size": 8529,
+  "dev_size": 1066,
+  "test_size": 1067,
+  "best_dev_macro_f1": 0.7502994303089767,
+  "test_accuracy": 0.7713214620431116,
+  "test_macro_f1": 0.7710751417436936,
+  "elapsed_sec": 24.577864170074463
+}
