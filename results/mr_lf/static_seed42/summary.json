@@ -1,0 +1,18 @@
+{
+  "run_id": "static_seed42",
+  "mode": "static",
+  "filter_sizes": "3,4,5",
+  "condition": "static",
+  "seed": 42,
+  "split_manifest_sha256": "1ea2efd834947d346780564d8c6c5147d9aa93439a53ca55315c320202a8d6dd",
+  "embedding_source": "local_svd_frozen",
+  "embedding_trainable": false,
+  "vocab_size": 16680,
+  "train_size": 8529,
+  "dev_size": 1066,
+  "test_size": 1067,
+  "best_dev_macro_f1": 0.7000124677175172,
+  "test_accuracy": 0.7150890346766635,
+  "test_macro_f1": 0.7108627906810905,
+  "elapsed_sec": 17.263710260391235
+}

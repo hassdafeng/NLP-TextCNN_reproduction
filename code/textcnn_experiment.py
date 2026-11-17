@@ -25,8 +25,10 @@ from torch.utils.data import DataLoader, Dataset
 
 ROOT = Path(__file__).resolve().parents[1]
 RAW_DIR = ROOT / "data" / "raw"
-SPLIT_DIR = ROOT / "data" / "processed"
-RESULT_DIR = ROOT / "results"
+SPLIT_DIR = ROOT / "data" / "processed_lf"
+RESULT_DIR = ROOT / "results" / "mr_lf"
+RECORD_FORMAT = "mr_lf_v1"
+MR_ROWS_PER_CLASS = 5331
 
 URLS = {
     "pos": "https://raw.githubusercontent.com/yoonkim/CNN_sentence/master/rt-polarity.pos",
@@ -92,10 +94,17 @@ def download_mr() -> None:
 
 
 def read_raw_lines(path: Path) -> List[str]:
+    # Split physical records before decoding. In Latin-1, byte 0x85
+    # becomes a Unicode line separator even when it occurs inside a review.
+    raw = path.read_bytes()
+    records = raw.split(b"\n")
+    if records[-1] == b"":
+        records.pop()
+    records = [record.removesuffix(b"\r") for record in records]
     try:
-        return path.read_text(encoding="utf-8").splitlines()
+        return [record.decode("utf-8") for record in records]
     except UnicodeDecodeError:
-        return path.read_text(encoding="latin-1").splitlines()
+        return [record.decode("latin-1") for record in records]
 
 
 def build_split(cfg: RunConfig) -> None:
@@ -103,12 +112,31 @@ def build_split(cfg: RunConfig) -> None:
     SPLIT_DIR.mkdir(parents=True, exist_ok=True)
     manifest_path = SPLIT_DIR / "manifest.json"
     split_paths = [SPLIT_DIR / f"{name}.csv" for name in ("train", "dev", "test")]
+    split_spec = {
+        "record_format": RECORD_FORMAT,
+        "source": URLS,
+        "raw_sha256": {
+            f"rt-polarity.{label}": hashlib.sha256(
+                (RAW_DIR / f"rt-polarity.{label}").read_bytes().replace(b"\r\n", b"\n")
+            ).hexdigest()
+            for label in URLS
+        },
+        "split_seed": cfg.split_seed,
+        "val_ratio": cfg.val_ratio,
+        "test_ratio": cfg.test_ratio,
+    }
     if manifest_path.exists() and all(p.exists() for p in split_paths):
-        return
+        cached = json.loads(manifest_path.read_text(encoding="utf-8"))
+        if (all(cached.get(key) == value for key, value in split_spec.items())
+                and cached.get("csv_sha256") == {p.name: sha256_file(p) for p in split_paths}):
+            return
 
     rows = []
     for label_name, label_id in [("pos", 1), ("neg", 0)]:
-        for i, text in enumerate(read_raw_lines(RAW_DIR / f"rt-polarity.{label_name}")):
+        records = read_raw_lines(RAW_DIR / f"rt-polarity.{label_name}")
+        if len(records) != MR_ROWS_PER_CLASS or any(not text.strip() for text in records):
+            raise ValueError(f"MR {label_name}: expected {MR_ROWS_PER_CLASS} nonempty records, got {len(records)} rows")
+        for i, text in enumerate(records):
             rows.append({"id": f"mr-{label_name}-{i:05d}", "text": text, "label": label_id})
     df = pd.DataFrame(rows)
     train_df, temp_df = train_test_split(
@@ -125,14 +153,13 @@ def build_split(cfg: RunConfig) -> None:
         stratify=temp_df["label"],
     )
     for name, part in [("train", train_df), ("dev", dev_df), ("test", test_df)]:
-        part.sort_values("id").to_csv(SPLIT_DIR / f"{name}.csv", index=False, encoding="utf-8")
+        part.sort_values("id").to_csv(
+            SPLIT_DIR / f"{name}.csv", index=False, encoding="utf-8", lineterminator="\n"
+        )
 
     manifest = {
-        "source": URLS,
-        "raw_sha256": {p.name: sha256_file(p) for p in RAW_DIR.glob("rt-polarity.*")},
-        "split_seed": cfg.split_seed,
-        "val_ratio": cfg.val_ratio,
-        "test_ratio": cfg.test_ratio,
+        **split_spec,
+        "csv_sha256": {p.name: sha256_file(p) for p in split_paths},
         "counts": {
             "train": int(len(train_df)),
             "dev": int(len(dev_df)),
@@ -141,7 +168,7 @@ def build_split(cfg: RunConfig) -> None:
         "label_map": {"neg": 0, "pos": 1},
         "note": "Fixed stratified 80/10/10 split for the course reproduction package. The original paper reports 10-fold CV on MR.",
     }
-    manifest_path.write_text(json.dumps(manifest, indent=2, ensure_ascii=False), encoding="utf-8")
+    manifest_path.write_text(json.dumps(manifest, indent=2, ensure_ascii=False), encoding="utf-8", newline="\n")
 
 
 def load_split(name: str) -> pd.DataFrame:
@@ -274,6 +301,7 @@ def enforce_max_norm(model: nn.Module, max_norm: float) -> None:
 def run_one(cfg: RunConfig) -> Dict[str, object]:
     set_seed(cfg.seed)
     build_split(cfg)
+    split_hash = sha256_file(SPLIT_DIR / "manifest.json")
     train_df, dev_df, test_df = load_split("train"), load_split("dev"), load_split("test")
     vocab = build_vocab(train_df["text"], cfg.min_freq)
     emb, trainable_embedding, emb_source = make_embeddings(cfg, train_df, vocab)
@@ -347,6 +375,7 @@ def run_one(cfg: RunConfig) -> Dict[str, object]:
         "filter_sizes": ",".join(map(str, cfg.filter_sizes)),
         "condition": cfg.mode if cfg.filter_sizes == (3, 4, 5) else f"{cfg.mode}_w{''.join(map(str, cfg.filter_sizes))}",
         "seed": cfg.seed,
+        "split_manifest_sha256": split_hash,
         "embedding_source": emb_source,
         "embedding_trainable": trainable_embedding,
         "vocab_size": len(vocab),
@@ -364,8 +393,11 @@ def run_one(cfg: RunConfig) -> Dict[str, object]:
 
 def summarize() -> None:
     summaries = []
+    split_hash = sha256_file(SPLIT_DIR / "manifest.json")
     for path in sorted(RESULT_DIR.glob("*_seed*/summary.json")):
         item = json.loads(path.read_text(encoding="utf-8"))
+        if item.get("split_manifest_sha256") != split_hash:
+            continue
         config_path = path.parent / "config.json"
         if "filter_sizes" not in item and config_path.exists():
             cfg = json.loads(config_path.read_text(encoding="utf-8"))

@@ -1,0 +1,23 @@
+{
+  "mode": "non_static",
+  "seed": 2026,
+  "embedding_dim": 50,
+  "max_len": 64,
+  "min_freq": 1,
+  "batch_size": 50,
+  "epochs": 5,
+  "lr": 1.0,
+  "dropout": 0.5,
+  "filter_sizes": [
+    2,
+    4,
+    5
+  ],
+  "num_filters": 100,
+  "l2_weight": 0.0,
+  "l2_max_norm": 3.0,
+  "val_ratio": 0.1,
+  "test_ratio": 0.1,
+  "split_seed": 2026,
+  "device": "cpu"
+}

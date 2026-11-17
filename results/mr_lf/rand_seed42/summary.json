@@ -1,0 +1,18 @@
+{
+  "run_id": "rand_seed42",
+  "mode": "rand",
+  "filter_sizes": "3,4,5",
+  "condition": "rand",
+  "seed": 42,
+  "split_manifest_sha256": "1ea2efd834947d346780564d8c6c5147d9aa93439a53ca55315c320202a8d6dd",
+  "embedding_source": "random_trainable",
+  "embedding_trainable": true,
+  "vocab_size": 16680,
+  "train_size": 8529,
+  "dev_size": 1066,
+  "test_size": 1067,
+  "best_dev_macro_f1": 0.6862601529720436,
+  "test_accuracy": 0.7010309278350515,
+  "test_macro_f1": 0.6975787499344732,
+  "elapsed_sec": 28.316386938095093
+}
